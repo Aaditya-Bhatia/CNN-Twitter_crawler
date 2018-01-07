@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width">
+
+    <title>Assignment</title>
+
+    <link rel="stylesheet" href="">
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+</head>
+<body>
+    <script>      
+          var xmlHttp = new XMLHttpRequest();
+                 
+          function loadData(url) {            
+          return new Promise(function(resolve, reject) {              
+          
+            xmlHttp.open('GET', url,true);
+            xmlHttp.onload = function() {
+              if (xmlHttp.status === 200) {
+
+                resolve(xmlHttp.response);
+
+              } else {
+             
+              }
+            };
+            xmlHttp.onerror = function() {                          
+            };      
+            xmlHttp.send();
+          });
+       }
+         loadData("http://192.168.1.101:5006/twitterData").then(function(response) {
+          console.log(xmlHttp.response);
+         myObj = JSON.parse(xmlHttp.response);
+          console.log(myObj);
+           var txt;  
+          txt += "<table border='1'>"
+          for (i =0 ;i < myObj.length; i++) {  
+              txt += "<tr><td>" + myObj[i] + "</td></tr>";
+          }
+          txt += "</table>"        
+          document.getElementById("twitter").innerHTML = txt;
+          
+          loadData("http://192.168.1.101:5006/CNNData").then(function(response) {
+          console.log(xmlHttp.response);
+          myObj = JSON.parse(xmlHttp.response);
+          console.log(myObj);
+           var txt;  
+          txt += "<table border='1'>"
+          for (i =0 ;i < myObj.length; i++) {  
+              txt += "<tr><td><a href=" + myObj[i].link+">" +myObj[i].title+ "</a></td></tr>";
+          }
+          txt += "</table>"        
+          document.getElementById("cnn").innerHTML = txt;
+          
+        }, function(Error) {
+          console.log(Error);
+        });     
+        }, function(Error) {
+          console.log(Error);
+        });     
+
+
+        </script>
+<div style = "display:flex;width:100%;background:#eeffff;align-items:stretch;flex:1">
+    <div style = "width:100%;">
+        <h2 style = "width:100%;background:#e3f2fd">Twitter Feed: </h2>      
+        <div id = "twitter">Please wait...</div>        
+    </div>
+   <div style = "width:100%;">
+        <h2 style = "width:100%;background:#e3f2fd">CNN Feed: </h2>      
+        <div id = "cnn"> Please wait...</div>        
+    </div>
+</div>
+
+
+
+</body>
+</html>
